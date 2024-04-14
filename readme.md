@@ -45,7 +45,7 @@
 
 - Manager: Oversees the overall operations of the blood donation camp or organization, ensuring smooth coordination among staff, volunteers, and donors, and handling any issues that may arise.
 
-# Documentation Of End Points
+# Docs Of End Points
 
 ## Donor
 
