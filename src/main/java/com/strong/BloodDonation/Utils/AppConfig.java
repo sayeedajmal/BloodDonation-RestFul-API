@@ -27,6 +27,12 @@ public class AppConfig implements WebMvcConfigurer {
 	@Value("${bloodDonation.organisation.TimeZone}")
 	private String timeZone;
 
+	@Value("${bloodDonation.Cors.Url}")
+	private String CORS_URL;
+
+	@Value("${bloodDonation.Cors.Methods}")
+	private String CORS_METHODS;
+
 	@PostConstruct
 	public void SetTimeDate() {
 		TimeZone.setDefault(TimeZone.getTimeZone(timeZone));
@@ -54,8 +60,8 @@ public class AppConfig implements WebMvcConfigurer {
 	@Override
 	public void addCorsMappings(@SuppressWarnings("null") CorsRegistry registry) {
 		registry.addMapping("/**")
-				.allowedOrigins("http://127.0.0.1:5500")
-				.allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH");
+				.allowedOrigins(CORS_URL)
+				.allowedMethods(CORS_METHODS);
 		WebMvcConfigurer.super.addCorsMappings(registry);
 	}
 
