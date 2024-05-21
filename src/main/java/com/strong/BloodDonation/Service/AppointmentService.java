@@ -54,7 +54,6 @@ public class AppointmentService {
         return findAll;
     }
 
-    @SuppressWarnings("null")
     public void deleteAppointment(Integer appointId) throws BloodException {
         try {
             appointRepo.delete(findById(appointId));
@@ -78,7 +77,6 @@ public class AppointmentService {
         }
     }
 
-    @SuppressWarnings("null")
     public List<Donor> doAppointDonor() throws BloodException {
         List<Integer> todayAppointments = appointRepo.doAppointDonor();
         List<Donor> donorList = new ArrayList<>();

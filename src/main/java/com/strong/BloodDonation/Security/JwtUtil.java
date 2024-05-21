@@ -6,6 +6,7 @@ import java.util.Date;
 
 import javax.crypto.SecretKey;
 
+import org.aspectj.weaver.Position;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -75,7 +76,7 @@ public class JwtUtil {
     }
 
     public Collection<? extends GrantedAuthority> getAuthorityList(Staff staff) {
-        String authority = staff.getPosition();
+        String authority = staff.getPosition().toString();
         GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(authority);
         return Collections.singletonList(grantedAuthority);
     }
