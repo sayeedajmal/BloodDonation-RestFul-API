@@ -6,8 +6,12 @@ import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.strong.BloodDonation.Utils.Positions;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -28,8 +32,8 @@ public class Staff {
     @Column(nullable = false)
     private String staffName;
 
-    @Column(nullable = false)
-    private String position;
+    @Enumerated(EnumType.STRING)
+    private Positions position;
 
     @Column(nullable = false)
     private String contactNumber;

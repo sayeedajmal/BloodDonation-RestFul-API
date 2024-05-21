@@ -2,6 +2,7 @@ package com.strong.BloodDonation.Controller;
 
 import java.util.List;
 
+import org.aspectj.weaver.Position;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,7 @@ import com.strong.BloodDonation.Model.Staff;
 import com.strong.BloodDonation.Security.JwtUtil;
 import com.strong.BloodDonation.Service.StaffService;
 import com.strong.BloodDonation.Utils.BloodException;
+import com.strong.BloodDonation.Utils.Positions;
 
 import jakarta.transaction.Transactional;
 
@@ -137,7 +139,7 @@ public class StaffController {
     @PreAuthorize("hasAuthority('Manager')")
     @Transactional
     @PatchMapping("updateStaffPosition")
-    public ResponseEntity<String> positionStaff(@RequestParam("staffId") Integer staffId, String position,
+    public ResponseEntity<String> positionStaff(@RequestParam("staffId") Integer staffId, Positions position,
             boolean enabled) throws BloodException {
         Staff byId = staffService.findById(staffId);
 

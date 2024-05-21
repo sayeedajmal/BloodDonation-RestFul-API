@@ -26,7 +26,7 @@ public class AuthService {
 
         if (authenticate.isAuthenticated()) {
             Staff user = repository.findByEmail(request.getEmail()).orElseThrow();
-            return jwtService.generateJwtToken(user.getEmail(), user.getPosition());
+            return jwtService.generateJwtToken(user.getEmail(), user.getPosition().toString());
         } else
             throw new JwtException("Some Thing Wrong In Auth Service");
     }
