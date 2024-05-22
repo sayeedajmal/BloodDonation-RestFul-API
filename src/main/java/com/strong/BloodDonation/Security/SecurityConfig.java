@@ -8,16 +8,23 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
+
+import com.strong.BloodDonation.Security.Filter.JwtAuthenticationFilter;
+import com.strong.BloodDonation.Service.StaffServiceImp;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -31,6 +38,18 @@ public class SecurityConfig {
     @Value("${bloodDonation.Cors.Methods}")
     private String CORS_METHODS;
 
+    private final StaffServiceImp userDetailsServiceImp;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final CustomLogoutHandler logoutHandler;
+
+    public SecurityConfig(StaffServiceImp userDetailsServiceImp,
+            JwtAuthenticationFilter jwtAuthenticationFilter,
+            CustomLogoutHandler logoutHandler) {
+        this.userDetailsServiceImp = userDetailsServiceImp;
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+        this.logoutHandler = logoutHandler;
+    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         // Configure CORS settings
@@ -39,7 +58,7 @@ public class SecurityConfig {
             public CorsConfiguration getCorsConfiguration(@SuppressWarnings("null") HttpServletRequest request) {
                 CorsConfiguration config = new CorsConfiguration();
                 config.setAllowedOrigins(Collections.singletonList(CORS_URL));
-                config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));/* CORS_METHODS.split(",")) */
+                config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE")); /* CORS_METHODS.split(",") */
                 config.setAllowCredentials(true);
                 config.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
                 config.setMaxAge(3600L);
@@ -50,13 +69,27 @@ public class SecurityConfig {
 
         // CSRF protection is disabled as it's typically not needed for stateless
         // RESTful APIs
-        http.csrf((csrf) -> csrf.disable());
+        http.csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(requests -> requests
+                        .requestMatchers(HttpMethod.POST, "/**").permitAll() // Allow all POST requests
+                        // Adjust the matcher to be more spacific
+                        .requestMatchers("/api/v1/public/admin_only/**").hasAuthority("Manager")
+                        .anyRequest().authenticated())
+                .userDetailsService(userDetailsServiceImp)
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling(exception -> exception
+                        .accessDeniedHandler((request, response, accessDeniedException) -> response
+                                .setStatus(HttpStatus.FORBIDDEN.value()))
+                        .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .addLogoutHandler(logoutHandler)
+                        .logoutSuccessHandler(
+                                (request, response, authentication) -> SecurityContextHolder.clearContext()));
 
-        // Configure authorization for requests
-        http.authorizeHttpRequests((requests) -> requests
-                .requestMatchers(HttpMethod.POST, "/**").permitAll() // Allow all POST requests
-                .anyRequest().authenticated())
-                .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        // Note: The build() method should be called only once at the end of the
+        // configuration.
         return http.build();
     }
 
@@ -66,9 +99,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
-            throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
     }
-
 }
