@@ -57,7 +57,7 @@ public class AppointController {
      * @MailService sendAppointmentNotification send the notification if sucessfull
      * @return A response indicating the success or failure of the operation.
      */
-    @PreAuthorize("hasAuthority('Manager')")
+    @PreAuthorize("hasAuthority('Appoint')")
     @PostMapping("createAppointment")
     public ResponseEntity<String> createAppointment(@ModelAttribute Appointment appointment,
             @RequestParam Integer donorId) throws BloodException {

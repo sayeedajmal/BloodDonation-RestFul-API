@@ -88,7 +88,11 @@ public class Staff implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(position.name()));
+        if (position == null || position.name().isEmpty()) {
+            throw new IllegalStateException("You Are Not Assigned To Any ");
+        } else {
+            return List.of(new SimpleGrantedAuthority(position.name()));
+        }
     }
 
     public String getPassword() {

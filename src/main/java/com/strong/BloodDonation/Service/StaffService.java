@@ -22,13 +22,13 @@ public class StaffService {
 
     private PasswordEncoder passwordEncoder;
 
-    public void createStaff(Staff staff) throws BloodException {
+/*     public void createStaff(Staff staff) throws BloodException {
         staff.setPassword(passwordEncoder.encode(staff.getPassword()));
         staff.setEnabled(false);
         staff.setUpdatedAt(null);
         staff.setPosition(null);
         staffRepo.save(staff);
-    }
+    } */
 
     public Staff findByEmail(String email) {
         return staffRepo.findByEmail(email)
