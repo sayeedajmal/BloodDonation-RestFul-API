@@ -10,13 +10,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import jakarta.annotation.PostConstruct;
 
 @Configuration
-public class AppConfig implements WebMvcConfigurer {
+public class MailConfig {
 
 	@Value("${bloodDonation.organisation.Email}")
 	private String email;
@@ -26,12 +24,6 @@ public class AppConfig implements WebMvcConfigurer {
 
 	@Value("${bloodDonation.organisation.TimeZone}")
 	private String timeZone;
-
-	@Value("${bloodDonation.Cors.Url}")
-	private String CORS_URL;
-
-	@Value("${bloodDonation.Cors.Methods}")
-	private String CORS_METHODS;
 
 	@PostConstruct
 	public void SetTimeDate() {
@@ -55,14 +47,6 @@ public class AppConfig implements WebMvcConfigurer {
 		props.put("mail.debug", "false");
 
 		return mailSender;
-	}
-
-	@Override
-	public void addCorsMappings(@SuppressWarnings("null") CorsRegistry registry) {
-		registry.addMapping("/**")
-				.allowedOrigins(CORS_URL)
-				.allowedMethods(CORS_METHODS);
-		WebMvcConfigurer.super.addCorsMappings(registry);
 	}
 
 }

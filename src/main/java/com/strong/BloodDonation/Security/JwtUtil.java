@@ -55,22 +55,23 @@ public class JwtUtil {
         try {
             Jwts.parser().verifyWith(getSecretKey()).build().parseSignedClaims(authToken);
             return true;
-        } catch (Exception e) {
+        } catch (JwtException e) {
             System.out.println("Error validating JWT token: " + e.getMessage());
+            return false;
         }
-        return false;
     }
 
     public String extractJwtToken(HttpServletRequest request) {
         String authorizationHeader = request.getHeader("Authorization");
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             return authorizationHeader.substring(7);
-        } else
-            throw new JwtException("Authorization Header is Empty");
+        } else {
+            throw new JwtException("Authorization Header is Empty or Malformed");
+        }
     }
 
     private SecretKey getSecretKey() {
-        byte[] keyBytes = Decoders.BASE64URL.decode(secretKey);
+        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
