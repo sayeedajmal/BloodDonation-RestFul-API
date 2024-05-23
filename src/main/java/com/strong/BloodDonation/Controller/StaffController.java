@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -46,12 +45,12 @@ public class StaffController {
      * @param staff The staff object to be created.
      * @return A response indicating the success or failure of the operation.
      */
-    @PostMapping("createStaff")
+/*     @PostMapping("createStaff")
     public ResponseEntity<String> createStaff(@RequestBody Staff staff) throws BloodException {
         staffService.createStaff(staff);
         mailService.sendStaffWelcomeEmail(staff);
         return new ResponseEntity<>("Created Successfully", HttpStatus.CREATED);
-    }
+    } */
 
     /**
      * GET endpoint to retrieve a list of all staff members.
