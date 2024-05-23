@@ -1,0 +1,44 @@
+RestFul API/
+├── src/
+│   ├── main/
+│   │   ├── java/
+│   │   │   └── com/
+│   │   │       └── strong/
+│   │   │           └── bloodbank/
+│   │   │               ├── controller/
+│   │   │               │   ├── AppointController.java
+│   │   │               │   ├── DonorController.java
+│   │   │               │   ├── MedicalHistController.java
+│   │   │               │   ├── StaffController.java
+│   │   │               │   └── DonationController.java
+│   │   │               ├── model/
+│   │   │               │   ├── Appointment.java
+│   │   │               │   ├── Donor.java
+│   │   │               │   ├── MedicalHistory.java
+│   │   │               │   ├── Staff.java
+│   │   │               │   └── Donation.java
+│   │   │               ├── repository/
+│   │   │               │   ├── AppointmentRepository.java
+│   │   │               │   ├── DonorRepository.java
+│   │   │               │   ├── MedicalHistoryRepository.java
+│   │   │               │   ├── StaffRepository.java
+│   │   │               │   └── DonationRepository.java
+│   │   │               ├── service/
+│   │   │               │   ├── AppointmentService.java
+│   │   │               │   ├── DonorService.java
+│   │   │               │   ├── MedicalHistoryService.java
+│   │   │               │   ├── StaffService.java
+│   │   │               │   └── DonationService.java
+│   │   │               ├── security/
+│   │   │               │   ├── JwtAuthenticationEntryPoint.java
+│   │   │               │   ├── JwtRequestFilter.java
+│   │   │               │   ├── JwtTokenUtil.java
+│   │   │               │   ├── JwtUserDetailsService.java
+│   │   │               │   └── WebSecurityConfig.java
+│   │   │               └── BloodBankApplication.java
+│   │   ├── resources/
+│   │       ├── application.properties
+│   │       ├── data.sql
+│   │       └── schema.sql
+├── pom.xml
+└── README.md
