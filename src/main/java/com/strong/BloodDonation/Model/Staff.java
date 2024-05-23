@@ -105,7 +105,7 @@ public class Staff implements UserDetails {
 
     @Override
     public String getUsername() {
-        return staffName;
+        return email;
 
     }
 

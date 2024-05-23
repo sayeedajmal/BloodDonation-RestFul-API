@@ -35,30 +35,30 @@ public class JwtUtil {
         this.tokenRepository = tokenRepository;
     }
 
-    public String extractUsername(String token) {
+    public String extractUserEmail(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
     public boolean isValid(String token, UserDetails staff) {
-        String username = extractUsername(token);
+        String email = extractUserEmail(token);
 
         boolean validToken = tokenRepository
                 .findByAccessToken(token)
                 .map(t -> !t.isLoggedOut())
                 .orElse(false);
 
-        return (username.equals(staff.getUsername())) && !isTokenExpired(token) && validToken;
+        return (email.equals(staff.getUsername())) && !isTokenExpired(token) && validToken;
     }
 
     public boolean isValidRefreshToken(String token, Staff staff) {
-        String username = extractUsername(token);
+        String email = extractUserEmail(token);
 
         boolean validRefreshToken = tokenRepository
                 .findByRefreshToken(token)
                 .map(t -> !t.isLoggedOut())
                 .orElse(false);
 
-        return (username.equals(staff.getUsername())) && !isTokenExpired(token) && validRefreshToken;
+        return (email.equals(staff.getUsername())) && !isTokenExpired(token) && validRefreshToken;
     }
 
     private boolean isTokenExpired(String token) {

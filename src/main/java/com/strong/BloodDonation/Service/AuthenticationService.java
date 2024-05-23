@@ -8,17 +8,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.strong.BloodDonation.Email.MailService;
 import com.strong.BloodDonation.Model.AuthenticationResponse;
+import com.strong.BloodDonation.Model.LoginRequest;
 import com.strong.BloodDonation.Model.Staff;
 import com.strong.BloodDonation.Model.Token;
 import com.strong.BloodDonation.Repository.StaffRepo;
 import com.strong.BloodDonation.Repository.TokenRepository;
 import com.strong.BloodDonation.Security.JwtUtil;
 
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -41,7 +44,8 @@ public class AuthenticationService {
     public AuthenticationResponse register(Staff request) {
 
         // check if staff already exist. if exist than authenticate the staff
-        if (repository.findByStaffName(request.getUsername()).isPresent()) {
+        if (repository.findByStaffName(request.getUsername()).isPresent()
+                || repository.findByEmail(request.getEmail()).isPresent()) {
             return new AuthenticationResponse(null, null, "staff already exist");
         }
 
@@ -67,13 +71,15 @@ public class AuthenticationService {
 
     }
 
-    public AuthenticationResponse authenticate(Staff request) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getUsername(),
-                        request.getPassword()));
-
-        Staff staff = repository.findByStaffName(request.getUsername()).orElseThrow();
+    public AuthenticationResponse authenticate(LoginRequest request) {
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                    request.getEmail(),
+                    request.getPassword()));
+        } catch (AuthenticationException e) {
+            throw new JwtException("Incorrect email or password", e);
+        }
+        Staff staff = repository.findByEmail(request.getEmail()).orElseThrow();
         String accessToken = jwtUtils.generateAccessToken(staff);
         String refreshToken = jwtUtils.generateRefreshToken(staff);
 
@@ -106,8 +112,7 @@ public class AuthenticationService {
         tokenRepository.save(token);
     }
 
-    public ResponseEntity<?> refreshToken(
-            HttpServletRequest request,
+    public ResponseEntity<AuthenticationResponse> refreshToken(HttpServletRequest request,
             HttpServletResponse response) {
         // extract the token from authorization header
         String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
@@ -118,27 +123,29 @@ public class AuthenticationService {
 
         String token = authHeader.substring(7);
 
-        // extract username from token
-        String username = jwtUtils.extractUsername(token);
+        // extract email from token
+        String email = jwtUtils.extractUserEmail(token);
 
-        // check if the staff exist in database
-        Staff staff = repository.findByStaffName(username)
-                .orElseThrow(() -> new RuntimeException("No staff found"));
+        // check if the staff exists in the database
+        Staff staff = repository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Staff not found"));
 
         // check if the token is valid
         if (jwtUtils.isValidRefreshToken(token, staff)) {
-            // generate access token
+            // generate access token and refresh token
             String accessToken = jwtUtils.generateAccessToken(staff);
             String refreshToken = jwtUtils.generateRefreshToken(staff);
 
+            // revoke all tokens for this user and save new tokens
             revokeAllTokenByUser(staff);
             saveUserToken(accessToken, refreshToken, staff);
 
-            return new ResponseEntity<>(new AuthenticationResponse(accessToken, refreshToken, "New token generated"),
-                    HttpStatus.OK);
+            // return new tokens in the response
+            AuthenticationResponse authenticationResponse = new AuthenticationResponse(accessToken, refreshToken,
+                    "New token generated");
+            return new ResponseEntity<>(authenticationResponse, HttpStatus.OK);
         }
 
         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-
     }
 }
