@@ -11,6 +11,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreType;
 import com.strong.BloodDonation.Utils.Positions;
 
 import jakarta.persistence.Column;
@@ -29,6 +30,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Setter
 @Getter
+@JsonIgnoreType
 public class Staff implements UserDetails {
 
     @Id
@@ -83,7 +85,7 @@ public class Staff implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return enabled;
     }
 
     @Override

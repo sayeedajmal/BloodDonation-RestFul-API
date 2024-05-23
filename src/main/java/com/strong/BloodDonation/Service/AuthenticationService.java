@@ -58,8 +58,6 @@ public class AuthenticationService {
         staff.setPosition(null);
         staff.setStaffId(staff.getStaffId());
         staff.setPassword(passwordEncoder.encode(request.getPassword()));
-        staff.setPosition(request.getPosition());
-
         staff = repository.save(staff);
 
         String accessToken = jwtUtils.generateAccessToken(staff);
