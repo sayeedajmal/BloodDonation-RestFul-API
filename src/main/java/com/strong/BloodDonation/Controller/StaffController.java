@@ -45,12 +45,27 @@ public class StaffController {
      * @param staff The staff object to be created.
      * @return A response indicating the success or failure of the operation.
      */
-/*     @PostMapping("createStaff")
-    public ResponseEntity<String> createStaff(@RequestBody Staff staff) throws BloodException {
-        staffService.createStaff(staff);
-        mailService.sendStaffWelcomeEmail(staff);
-        return new ResponseEntity<>("Created Successfully", HttpStatus.CREATED);
-    } */
+    /*
+     * @PostMapping("createStaff")
+     * public ResponseEntity<String> createStaff(@RequestBody Staff staff) throws
+     * BloodException {
+     * staffService.createStaff(staff);
+     * mailService.sendStaffWelcomeEmail(staff);
+     * return new ResponseEntity<>("Created Successfully", HttpStatus.CREATED);
+     * }
+     */
+
+    /**
+     * GET endpoint to find staff details.
+     *
+     * @param email The email with be passed.
+     * @return A response indicating the Staff Data or failure of the operation.
+     */
+    @PreAuthorize("hasAuthority('Manager','Appoint','Donor','Nurse')")
+    @GetMapping("/findStaffByEmail")
+    public Staff findStaffByEmail(@RequestParam String email) {
+        return staffService.findByEmail(email);
+    }
 
     /**
      * GET endpoint to retrieve a list of all staff members.

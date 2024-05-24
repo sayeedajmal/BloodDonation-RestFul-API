@@ -183,10 +183,10 @@
 
 - Base URL: `/api/v1/Staff`
 
-  - **POST** `createStaff`
+  - **GET** `findStaffByEmail`
 
-    - @Require Staff
-    - @Return HttpStatus
+    - @Require Email
+    - @Return Staff
 
   - **GET** `showStaff`
 
