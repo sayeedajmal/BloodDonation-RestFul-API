@@ -56,21 +56,21 @@
 
 ## 2. Appointment Scheduler
 
-`Appoint` Positions- `createAppointment`,`showAppointment`,`appointmentId`,`updateAppointment`,`doneAppointment`
+`Appoint` Positions- `createAppointment`,`showAppointment`,`appointmentId`,`updateAppointment`,`doneAppointment`,`updateStaff`
 
 - Creates and manages donor appointments.
 - Sends notifications to donors about scheduled appointments and manages related information.
 
 ## 3. Donor/History Relations
 
-`Donor` Positions- `showDonor`,`{donorId}`,`updateDonor`,`updateDonor`,`createHistory`,`showHistory`,`{historyId}`,`findByDonor/{donorId}`,`Delete {historyId}`,`updateHistory`
+`Donor` Positions- `showDonor`,`{donorId}`,`updateDonor`,`updateDonor`,`createHistory`,`showHistory`,`{historyId}`,`findByDonor/{donorId}`,`Delete {historyId}`,`updateHistory`,`updateStaff`
 
 - Handles donor-related tasks, including updating donor information.
 - Manages the creation and updating of donor medical history records.
 
 ## 4. Nurse / Phlebotomist
 
-`Nurse` Position- `showHistory`,`{historyId}`,`findByDonor/{donorId}`,`createDonation`,`{donationId}`,`updateDonation`,`{appointmentId}`,`doneAppointment`
+`Nurse` Position- `showHistory`,`{historyId}`,`findByDonor/{donorId}`,`createDonation`,`{donationId}`,`updateDonation`,`{appointmentId}`,`doneAppointment`,`updateStaff`
 
 - Involved in the blood donation process, responsible for taking blood.
 - Updates information in the BloodDonation database and notifies donors about successful blood donations.

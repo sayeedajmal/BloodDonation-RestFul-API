@@ -112,8 +112,8 @@ public class StaffController {
      * @param updatedStaff The updated staff member object.
      * @return A response indicating the success or failure of the operation.
      */
-    @PreAuthorize("hasAuthority('Manager')")
     @Transactional
+    @PreAuthorize("hasAuthority('Manager','Appoint','Donor','Nurse')")
     @PatchMapping("updateStaff")
     public ResponseEntity<String> updateStaff(@RequestBody Staff updatedStaff) throws BloodException {
         Staff staff = staffService.findById(updatedStaff.getStaffId());
@@ -121,6 +121,7 @@ public class StaffController {
         staff.setEmail(updatedStaff.getEmail());
         staff.setContactNumber(updatedStaff.getContactNumber());
         staff.setAddress(updatedStaff.getAddress());
+        staff.setPassword(updatedStaff.getPassword());
 
         staffService.updateStaff(updatedStaff);
         return new ResponseEntity<>("Updated Successfully", HttpStatus.OK);

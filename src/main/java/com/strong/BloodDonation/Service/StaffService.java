@@ -20,6 +20,7 @@ public class StaffService {
     @Autowired
     private StaffRepo staffRepo;
 
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
 /*     public void createStaff(Staff staff) throws BloodException {
