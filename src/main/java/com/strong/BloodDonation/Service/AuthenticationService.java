@@ -88,17 +88,16 @@ public class AuthenticationService {
 
     }
 
+    /* Deleting The Tokens */
     private void revokeAllTokenByUser(Staff staff) {
         List<Token> validTokens = tokenRepository.findAllAccessTokensByStaff(staff.getStaffId());
         if (validTokens.isEmpty()) {
             return;
         }
 
-        validTokens.forEach(t -> {
-            t.setLoggedOut(true);
+        validTokens.forEach(token -> {
+            tokenRepository.delete(token);
         });
-
-        tokenRepository.saveAll(validTokens);
     }
 
     private void saveUserToken(String accessToken, String refreshToken, Staff staff) {

@@ -14,8 +14,15 @@ public interface TokenRepository extends JpaRepository<Token, Integer> {
     @Query("""
             select t from Token t
             inner join t.staff s
-            where s.staffId = :staffId and t.loggedOut = false
+            where s.staffId = :staffId
             """)
+    /*
+     * """
+     * select t from Token t
+     * inner join t.staff s
+     * where s.staffId = :staffId and t.loggedOut = false
+     * """
+     */
     List<Token> findAllAccessTokensByStaff(@Param("staffId") Integer staffId);
 
     Optional<Token> findByAccessToken(String token);
