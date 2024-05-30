@@ -1,7 +1,7 @@
 package com.strong.BloodDonation.Security;
 
 import java.util.Arrays;
-import java.util.Collections;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -59,7 +59,7 @@ public class SecurityConfig {
                         .accessDeniedHandler(customAccessDeniedHandler())
                         .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
                 .logout(logout -> logout
-                        .logoutUrl("/logout")
+                        .logoutUrl("/api/v1/logout")
                         .addLogoutHandler(logoutHandler)
                         .logoutSuccessHandler(
                                 (request, response, authentication) -> SecurityContextHolder.clearContext()));
@@ -70,9 +70,10 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(Collections.singletonList(CORS_URL));
+        List<String> allowedOrigins = Arrays.asList(CORS_URL.split(","));
+        config.setAllowedOrigins(allowedOrigins);
         config.setAllowedMethods(Arrays.asList(CORS_METHODS.split(",")));
-        config.setAllowCredentials(true);
+        config.setAllowCredentials(false);
         config.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
         config.setMaxAge(3600L);
         config.setExposedHeaders(Arrays.asList(HttpHeaders.AUTHORIZATION));

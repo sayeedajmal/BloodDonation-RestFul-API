@@ -1,6 +1,7 @@
 package com.strong.BloodDonation.Controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -75,8 +76,16 @@ public class StaffController {
     @PreAuthorize("hasAuthority('Manager')")
     @GetMapping("showStaff")
     public ResponseEntity<List<Staff>> showStaff() throws BloodException {
-        List<Staff> findAll = staffService.findAll();
-        return new ResponseEntity<>(findAll, HttpStatus.OK);
+        List<Staff> staffs = staffService.findAll();
+        List<Staff> staffList = staffs.stream()
+                .map(staff -> new Staff(
+                        staff.getStaffId(), staff.getStaffName(),
+                        staff.getPosition(),
+                        staff.getContactNumber(),
+                        staff.getEmail(), staff.getAddress(), staff.isEnabled(), staff.getCreatedAt(),
+                        staff.getUpdatedAt()))
+                .collect(Collectors.toList());
+        return new ResponseEntity<>(staffList, HttpStatus.OK);
     }
 
     /**
@@ -88,8 +97,18 @@ public class StaffController {
     @PreAuthorize("hasAuthority('Manager','Appoint','Donor','Nurse')")
     @GetMapping("{staffId}")
     public ResponseEntity<Staff> showByIdStaff(@PathVariable("staffId") Integer staffId) throws BloodException {
-        Staff byId = staffService.findById(staffId);
-        return new ResponseEntity<>(byId, HttpStatus.OK);
+        Staff staff = staffService.findById(staffId);
+        Staff filteredStaff = new Staff(
+                staff.getStaffId(),
+                staff.getStaffName(),
+                staff.getPosition(),
+                staff.getContactNumber(),
+                staff.getEmail(),
+                staff.getAddress(),
+                staff.isEnabled(),
+                staff.getCreatedAt(),
+                staff.getUpdatedAt());
+        return new ResponseEntity<>(filteredStaff, HttpStatus.OK);
     }
 
     /**

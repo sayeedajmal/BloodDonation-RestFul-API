@@ -22,14 +22,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @NoArgsConstructor
-@Setter
-@Getter
 @JsonIgnoreType
 public class Staff implements UserDetails {
 
@@ -68,6 +64,19 @@ public class Staff implements UserDetails {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
+    public Staff(Integer staffId, String staffName, Positions position, String contactNumber, String email,
+            String address, boolean enabled, Date createdAt, LocalDateTime updatedAt) {
+        this.staffId = staffId;
+        this.staffName = staffName;
+        this.position = position;
+        this.contactNumber = contactNumber;
+        this.email = email;
+        this.address = address;
+        this.enabled = enabled;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;
@@ -91,7 +100,7 @@ public class Staff implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (position == null || position.name().isEmpty()) {
-            throw new IllegalStateException("You Are Not Assigned To Any Position");
+            return List.of();
         } else {
             return List.of(new SimpleGrantedAuthority(position.name()));
         }
@@ -109,6 +118,78 @@ public class Staff implements UserDetails {
     public String getUsername() {
         return email;
 
+    }
+
+    public Integer getStaffId() {
+        return staffId;
+    }
+
+    public void setStaffId(Integer staffId) {
+        this.staffId = staffId;
+    }
+
+    public String getStaffName() {
+        return staffName;
+    }
+
+    public void setStaffName(String staffName) {
+        this.staffName = staffName;
+    }
+
+    public Positions getPosition() {
+        return position;
+    }
+
+    public void setPosition(Positions position) {
+        this.position = position;
+    }
+
+    public void setTokens(List<Token> tokens) {
+        this.tokens = tokens;
+    }
+
+    public String getContactNumber() {
+        return contactNumber;
+    }
+
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
 }
