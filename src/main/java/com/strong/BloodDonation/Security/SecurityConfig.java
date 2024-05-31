@@ -73,7 +73,7 @@ public class SecurityConfig {
         List<String> allowedOrigins = Arrays.asList(CORS_URL.split(","));
         config.setAllowedOrigins(allowedOrigins);
         config.setAllowedMethods(Arrays.asList(CORS_METHODS.split(",")));
-        config.setAllowCredentials(false);
+        config.setAllowCredentials(true);
         config.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
         config.setMaxAge(3600L);
         config.setExposedHeaders(Arrays.asList(HttpHeaders.AUTHORIZATION));
