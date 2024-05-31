@@ -12,10 +12,10 @@
 	<groupId>com.strong</groupId>
 	<artifactId>blooddonation-security</artifactId>
 	<name>Blood Donation Security</name>
-	<version>3.1</version>
+	<version>3.2</version>
 	<description>Blood Donation Restful API</description>
 	<properties>
-		<java.version>21</java.version>
+		<java.version>17</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
