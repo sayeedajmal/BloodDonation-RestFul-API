@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS staff (
 
 -- Insert an initial admin into the staff table
 INSERT INTO staff (staff_id, staff_name, position, contact_number, email, address, password, enabled, created_at, updated_at)
-VALUES (1,'Admin','Manager','0000000000','Admin@gmail.com','AdminAddress','$2a$12$trsHDy6FeI6LiM/UAG6kUuFtY8dTA7ImKmU7AhXk56bthbXAeYIwa', true, NOW(), null);
+VALUES (2,'Admin','Manager','0000000000','Admin@gmail.com','AdminAddress','$2a$12$trsHDy6FeI6LiM/UAG6kUuFtY8dTA7ImKmU7AhXk56bthbXAeYIwa', true, NOW(), null);
 END_SQL
 
 # Restart MySQL service to apply changes

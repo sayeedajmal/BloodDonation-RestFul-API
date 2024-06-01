@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.strong.BloodDonation.Email.MailService;
 import com.strong.BloodDonation.Model.Staff;
-import com.strong.BloodDonation.Model.StaffDAO;
 import com.strong.BloodDonation.Service.StaffService;
 import com.strong.BloodDonation.Utils.BloodException;
 import com.strong.BloodDonation.Utils.Positions;
@@ -76,10 +75,10 @@ public class StaffController {
      */
     @PreAuthorize("hasAuthority('Manager')")
     @GetMapping("showStaff")
-    public ResponseEntity<List<StaffDAO>> showStaff() throws BloodException {
+    public ResponseEntity<List<Staff>> showStaff() throws BloodException {
         List<Staff> staffs = staffService.findAll();
-        List<StaffDAO> staffList = staffs.stream()
-                .map(staff -> new StaffDAO(
+        List<Staff> staffList = staffs.stream()
+                .map(staff -> new Staff(
                         staff.getStaffId(), staff.getStaffName(),
                         staff.getPosition(),
                         staff.getContactNumber(),
@@ -97,9 +96,9 @@ public class StaffController {
      */
     @PreAuthorize("hasAuthority('Manager','Appoint','Donor','Nurse')")
     @GetMapping("{staffId}")
-    public ResponseEntity<StaffDAO> showByIdStaff(@PathVariable("staffId") Integer staffId) throws BloodException {
+    public ResponseEntity<Staff> showByIdStaff(@PathVariable("staffId") Integer staffId) throws BloodException {
         Staff staff = staffService.findById(staffId);
-        StaffDAO filteredStaff = new StaffDAO(staffId, staff.getStaffName(), staff.getPosition(),
+        Staff filteredStaff = new Staff(staffId, staff.getStaffName(), staff.getPosition(),
                 staff.getContactNumber(), staff.getEmail(), staff.getAddress(),
                 staff.isEnabled(), staff.getCreatedAt(), staff.getUpdatedAt());
         return new ResponseEntity<>(filteredStaff, HttpStatus.OK);

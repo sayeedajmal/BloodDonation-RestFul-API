@@ -64,6 +64,19 @@ public class Staff implements UserDetails {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
+    public Staff(Integer staffId, String staffName, Positions position, String contactNumber, String email,
+            String address, boolean enabled, Date createdAt, LocalDateTime updatedAt) {
+        this.staffId = staffId;
+        this.staffName = staffName;
+        this.position = position;
+        this.contactNumber = contactNumber;
+        this.email = email;
+        this.address = address;
+        this.enabled = enabled;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;
