@@ -91,7 +91,7 @@ public class AppointController {
      * @param appointmentId The unique identifier of the appointment.
      * @return The requested appointment in JSON format.
      */
-    @PreAuthorize("hasAuthority('Appoint','Nurse')")
+    @PreAuthorize("hasAnyAuthority('Appoint','Nurse')")
     @GetMapping("{appointmentId}")
     public ResponseEntity<Appointment> showByIdAppointment(@PathVariable("appointmentId") Integer appointmentId)
             throws BloodException {
@@ -146,7 +146,7 @@ public class AppointController {
      *         with HTTP status 200 (OK).
      * @throws BloodException if there is an error retrieving today's appointments.
      */
-    @PreAuthorize("hasAuthority('Appoint','Nurse')")
+    @PreAuthorize("hasAnyAuthority('Appoint','Nurse')")
     @GetMapping("todayAppointments")
     public ResponseEntity<List<Appointment>> todayAppointment() throws BloodException {
         return new ResponseEntity<>(appointService.todayAppointments(), HttpStatus.OK);
@@ -175,7 +175,7 @@ public class AppointController {
      * @throws BloodException if there is an error retrieving appointments for the
      *                        specified date.
      */
-    @PreAuthorize("hasAuthority('Appoint','Nurse')")
+    @PreAuthorize("hasAnyAuthority('Appoint','Nurse')")
     @GetMapping("findByDate")
     public ResponseEntity<List<Appointment>> findAppointByDate(@PathVariable("date") LocalDate date)
             throws BloodException {

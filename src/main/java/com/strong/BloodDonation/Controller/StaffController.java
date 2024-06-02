@@ -62,7 +62,7 @@ public class StaffController {
      * @param email The email with be passed.
      * @return A response indicating the Staff Data or failure of the operation.
      */
-    @PreAuthorize("hasAuthority('Manager','Appoint','Donor','Nurse')")
+    @PreAuthorize("hasAnyAuthority('Manager','Appoint','Donor','Nurse')")
     @GetMapping("/findStaffByEmail")
     public Staff findStaffByEmail(@RequestParam String email) {
         return staffService.findByEmail(email);
@@ -94,7 +94,7 @@ public class StaffController {
      * @param staffId The unique identifier of the staff member.
      * @return The requested staff member in JSON format.
      */
-    @PreAuthorize("hasAuthority('Manager','Appoint','Donor','Nurse')")
+    @PreAuthorize("hasAnyAuthority('Manager','Appoint','Donor','Nurse')")
     @GetMapping("{staffId}")
     public ResponseEntity<Staff> showByIdStaff(@PathVariable("staffId") Integer staffId) throws BloodException {
         Staff staff = staffService.findById(staffId);
@@ -125,7 +125,7 @@ public class StaffController {
      * @return A response indicating the success or failure of the operation.
      */
     @Transactional
-    @PreAuthorize("hasAuthority('Manager','Appoint','Donor','Nurse')")
+    @PreAuthorize("hasAnyAuthority('Manager','Appoint','Donor','Nurse')")
     @PatchMapping("updateStaff")
     public ResponseEntity<String> updateStaff(@RequestBody Staff updatedStaff) throws BloodException {
         Staff staff = staffService.findById(updatedStaff.getStaffId());

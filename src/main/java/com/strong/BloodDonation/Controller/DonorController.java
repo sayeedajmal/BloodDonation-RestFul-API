@@ -70,7 +70,7 @@ public class DonorController {
      * @param donorId The unique identifier of the donor.
      * @return The requested donor in JSON format.
      */
-    @PreAuthorize("hasAuthority('Donor','Manager')")
+    @PreAuthorize("hasAnyAuthority('Donor','Manager')")
     @GetMapping("{donorId}")
     public ResponseEntity<Donor> showByIdDonor(@PathVariable("donorId") Integer donorId) throws BloodException {
         return new ResponseEntity<Donor>(donorService.findById(donorId), HttpStatus.OK);

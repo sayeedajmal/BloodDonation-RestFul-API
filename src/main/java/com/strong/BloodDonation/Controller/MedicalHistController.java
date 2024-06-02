@@ -76,7 +76,7 @@ public class MedicalHistController {
      * @return A list of medical histories in JSON format.
      * @throws BloodException
      */
-    @PreAuthorize("hasAuthority('Donor','Nurse')")
+    @PreAuthorize("hasAnyAuthority('Donor','Nurse')")
     @GetMapping("showHistory")
     public ResponseEntity<List<MedicalHistory>> showHistory() throws BloodException {
         return new ResponseEntity<>(medicalHistoryService.findAll(), HttpStatus.OK);
@@ -88,7 +88,7 @@ public class MedicalHistController {
      * @param historyId The unique identifier of the medical history.
      * @return The requested medical history in JSON format.
      */
-    @PreAuthorize("hasAuthority('Donor','Nurse')")
+    @PreAuthorize("hasAnyAuthority('Donor','Nurse')")
     @GetMapping("{historyId}")
     public ResponseEntity<MedicalHistory> showByIdHistory(@PathVariable("historyId") Integer historyId)
             throws BloodException {
@@ -102,7 +102,7 @@ public class MedicalHistController {
      * @param donorId The unique identifier of the donor.
      * @return The medical history associated with the donor in JSON format.
      */
-    @PreAuthorize("hasAuthority('Donor','Nurse')")
+    @PreAuthorize("hasAnyAuthority('Donor','Nurse')")
     @GetMapping("findByDonor/{donorId}")
     public ResponseEntity<MedicalHistory> findByDonorId(@PathVariable("donorId") Integer donorId)
             throws BloodException {

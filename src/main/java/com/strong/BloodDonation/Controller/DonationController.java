@@ -98,7 +98,7 @@ public class DonationController {
      * @param donationId The unique identifier of the Donation.
      * @return The requested Donation in JSON format.
      */
-    @PreAuthorize("hasAuthority('Nurse','Manager')")
+    @PreAuthorize("hasAnyAuthority('Nurse','Manager')")
     @GetMapping("{donationId}")
     public ResponseEntity<Donation> showByIdDonation(@PathVariable("donationId") Integer donationId)
             throws BloodException {
