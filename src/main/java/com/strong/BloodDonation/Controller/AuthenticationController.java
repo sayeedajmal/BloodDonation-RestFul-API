@@ -14,6 +14,7 @@ import com.strong.BloodDonation.Service.AuthenticationService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -26,7 +27,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> register(@RequestBody Staff staff) {
+    public ResponseEntity<?> register(@Valid @RequestBody Staff staff) {
         AuthenticationResponse register = authService.register(staff);
         if (register.getMessage().contains("staff already exist")) {
             return new ResponseEntity<>(register.getMessage(), HttpStatus.CONFLICT);

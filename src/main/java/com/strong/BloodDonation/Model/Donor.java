@@ -19,6 +19,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -37,29 +39,30 @@ public class Donor {
    @JsonBackReference
    private List<MedicalHistory> medicalHistoryList = new ArrayList<>();
 
-   @Column(nullable = false)
+   @NotNull(message = " is Required")
    private String firstName;
 
-   @Column(nullable = false)
+   @NotNull(message = " is Required")
    private String lastName;
 
-   @Column(nullable = false)
+   @NotNull(message = " is Required")
    private Date DOB;
 
    @Enumerated(EnumType.STRING)
    private BloodType BloodType;
 
-   @Column(nullable = false)
+   @NotNull(message = " is Required")
    private String contactNumber;
 
-   @Column(nullable = false)
+   @NotNull(message = " is Required")
    @Email
    private String email;
 
-   @Column(nullable = false)
+   @NotNull(message = " is Required")
    private String city;
 
    @Column(nullable = true)
+   @Past(message = "Last Donation Date must be from Past")
    private Date lastDonationDate;
 
    @CreationTimestamp

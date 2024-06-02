@@ -16,6 +16,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,14 +38,15 @@ public class Appointment {
     private Donor donor;
 
     @NotNull
+    @Future(message = "Please Select Future Date")
     private LocalDate appointmentDate;
 
-    @NotNull
+    @NotNull(message = "Appoint Time Required")
     @Check(constraints = "appointment_time >= '09:00:00' AND appointment_time <= '17:00:00'")
     private LocalTime appointmentTime;
 
     @Enumerated(EnumType.STRING)
-    @NotNull
+    @NotNull(message = "Status Required")
     private AppointmentStatus status;
 
 }

@@ -21,6 +21,7 @@ import com.strong.BloodDonation.Utils.BloodException;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 
 /**
  * DonorController class handles HTTP requests related to donor operations.
@@ -45,7 +46,7 @@ public class DonorController {
      *         failure of the operation.
      */
     @PostMapping("createDonor")
-    public ResponseEntity<String> createDonor(@RequestBody Donor donor) throws BloodException {
+    public ResponseEntity<String> createDonor(@Valid @RequestBody Donor donor) throws BloodException {
         donorService.saveDonor(donor);
         mailService.sendDonorSignUpEmail(donor);
         return new ResponseEntity<String>("Created Successfully", HttpStatus.CREATED);

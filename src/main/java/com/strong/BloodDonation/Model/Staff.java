@@ -22,6 +22,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotNull;
 import lombok.NoArgsConstructor;
 
 @Entity
@@ -33,7 +34,7 @@ public class Staff implements UserDetails {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer staffId;
 
-    @Column(nullable = false)
+    @NotNull(message = " is Required")
     private String staffName;
 
     @Enumerated(EnumType.STRING)
@@ -42,19 +43,19 @@ public class Staff implements UserDetails {
     @OneToMany(mappedBy = "staff")
     private List<Token> tokens;
 
-    @Column(nullable = false)
+    @NotNull(message = " is Required")
     private String contactNumber;
 
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false)
+    @NotNull(message = " is Required")
     private String address;
 
-    @Column(nullable = false)
+    @NotNull(message = " is Required")
     private String password;
 
-    @Column(nullable = false)
+    @NotNull(message = " is Required")
     private boolean enabled;
 
     @CreationTimestamp
