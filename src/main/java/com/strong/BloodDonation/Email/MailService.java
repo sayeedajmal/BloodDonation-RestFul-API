@@ -12,6 +12,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 
 import com.strong.BloodDonation.Model.Appointment;
+import com.strong.BloodDonation.Model.Contact;
 import com.strong.BloodDonation.Model.Donation;
 import com.strong.BloodDonation.Model.Donor;
 import com.strong.BloodDonation.Model.MedicalHistory;
@@ -32,6 +33,8 @@ public class MailService {
   @Value("${bloodDonation.organisation.name}")
   private String OrganisationName;
 
+  @Value("${bloodDonation.organisation.Email}")
+  private String OrganisationEmail;
   @Value("${bloodDonation.organisation.website}")
   private String OrganisationWebsite;
 
@@ -65,6 +68,28 @@ public class MailService {
     } catch (MessagingException e) {
       System.out.println("Failed to send email: " + e.getMessage());
     }
+  }
+
+  @Async
+  public void sendContactEmail(Contact contact) {
+    String subject = "New Contact Message from " + contact.getName();
+    String htmlContent = "<html><head><style>"
+        + "body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background-color: #f5f5f5; }"
+        + ".container { background-color: #fff; padding: 20px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); }"
+        + "h1 { text-align: center; font-size: 24px; color: #333; }"
+        + "p { line-height: 1.5; color: #666; }"
+        + "</style></head><body>"
+        + "<div class='container'>"
+        + "<h1>New Contact Message</h1>"
+        + "<p><b>Name:</b> " + contact.getName() + "</p>"
+        + "<p><b>Email:</b> " + contact.getEmail() + "</p>"
+        + "<p><b>Topic:</b> " + contact.getTopic() + "</p>"
+        + "<p><b>Message:</b></p>"
+        + "<p>" + contact.getMessage() + "</p>"
+        + "</div>"
+        + "</body></html>";
+
+    sendEmail(OrganisationEmail, subject, htmlContent);
   }
 
   @Async
