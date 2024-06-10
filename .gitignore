@@ -30,10 +30,5 @@ build/
 
 ### VS Code ###
 .vscode/
-rootCA.crt
-rootCA.key
-BloodDonationKey.crt
-rootCA.srl
-server.crt
-server.csr
-server.key
+BloodDonationKeyStore.p12
+*.p12
