@@ -7,6 +7,8 @@ WORKDIR /app
 # Uncomment it when local working
 #COPY target/blooddonation-security-3.2.jar app.jar
 #COPY .env .env
+
+# Uncomment it when deployment
 COPY blooddonation-security-3.2.jar app.jar
 
 # Run the application
