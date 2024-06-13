@@ -32,3 +32,4 @@ build/
 .vscode/
 BloodDonationKeyStore.p12
 *.p12
+.env
