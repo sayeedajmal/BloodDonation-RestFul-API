@@ -6,7 +6,6 @@ import java.util.Collection;
 import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,6 +21,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.NoArgsConstructor;
 
@@ -44,9 +45,11 @@ public class Staff implements UserDetails {
     private List<Token> tokens;
 
     @NotNull(message = " is Required")
+    @Min(10)
     private String contactNumber;
 
     @Column(nullable = false, unique = true)
+    @Email
     private String email;
 
     @NotNull(message = " is Required")
@@ -62,7 +65,6 @@ public class Staff implements UserDetails {
     @Column(updatable = false)
     private Date createdAt;
 
-    @UpdateTimestamp
     private LocalDateTime updatedAt;
 
     public Staff(Integer staffId, String staffName, Positions position, String contactNumber, String email,

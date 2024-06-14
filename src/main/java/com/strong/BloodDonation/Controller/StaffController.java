@@ -41,22 +41,6 @@ public class StaffController {
     private MailService mailService;
 
     /**
-     * POST endpoint to create a new staff member.
-     *
-     * @param staff The staff object to be created.
-     * @return A response indicating the success or failure of the operation.
-     */
-    /*
-     * @PostMapping("createStaff")
-     * public ResponseEntity<String> createStaff(@RequestBody Staff staff) throws
-     * BloodException {
-     * staffService.createStaff(staff);
-     * mailService.sendStaffWelcomeEmail(staff);
-     * return new ResponseEntity<>("Created Successfully", HttpStatus.CREATED);
-     * }
-     */
-
-    /**
      * GET endpoint to find staff details.
      *
      * @param email The email with be passed.
@@ -128,13 +112,6 @@ public class StaffController {
     @PreAuthorize("hasAnyAuthority('Manager','Appoint','Donor','Nurse')")
     @PatchMapping("updateStaff")
     public ResponseEntity<String> updateStaff(@RequestBody Staff updatedStaff) throws BloodException {
-        Staff staff = staffService.findById(updatedStaff.getStaffId());
-        staff.setStaffName(updatedStaff.getStaffName());
-        staff.setEmail(updatedStaff.getEmail());
-        staff.setContactNumber(updatedStaff.getContactNumber());
-        staff.setAddress(updatedStaff.getAddress());
-        staff.setPassword(updatedStaff.getPassword());
-
         staffService.updateStaff(updatedStaff);
         return new ResponseEntity<>("Updated Successfully", HttpStatus.OK);
     }
@@ -153,12 +130,7 @@ public class StaffController {
     @PatchMapping("updateStaffPosition")
     public ResponseEntity<String> positionStaff(@RequestParam("staffId") Integer staffId, Positions position,
             boolean enabled) throws BloodException {
-        Staff byId = staffService.findById(staffId);
-
-        byId.setPosition(position);
-        byId.setEnabled(enabled);
-        staffService.updateStaff(byId);
-        mailService.sendStaffPositionNotification(byId);
+        mailService.sendStaffPositionNotification(staffService.updateStaffPosition(staffId, position, enabled));
         return new ResponseEntity<>("Updated Successfully", HttpStatus.OK);
     }
 }
